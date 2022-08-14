@@ -62,7 +62,14 @@ export class DespesaComponent implements OnInit {
   async ngOnInit() {
     this.token = localStorage.getItem("token")
   
-    await this.despesasService.getDespesasPorPessoa(this.token).subscribe(obj => {
+    await this.carregarDespesasPorPessoa();
+    await this.carregarEstimativas();
+    await this.carregarTags();
+    
+  }
+
+  async carregarDespesasPorPessoa(){
+    this.despesasService.getDespesasPorPessoa(this.token).subscribe(obj => {
       let estimativasLabels: string[] = []
       let estimativasData: string[] = []
 
@@ -71,18 +78,21 @@ export class DespesaComponent implements OnInit {
         this.despesas.push(d)
       })
     })
+  }
 
-
+  async carregarEstimativas(){
     await this.despesasService.getEstimativas(this.token ).subscribe(objeto => {
+      console.log("Carregando estimativas")
       let estimativas: Estimativas[] = objeto
       let estimativasLabels: string[] = []
       let estimativasData: string[] = [];
-
+     
+      console.log(estimativas);
       estimativas.forEach(estimativa => {
         estimativasLabels.push(formatarDataExtenso(estimativa.data))
         estimativasData.push(estimativa.totalDespesasMes + '')
       })
-
+      
       this.graficoEstimativas.labels = estimativasLabels
       this.graficoEstimativas.data = estimativasData
       this.graficoEstimativas.legend = false
@@ -105,33 +115,37 @@ export class DespesaComponent implements OnInit {
           this.router.navigate(['/login']);
       }
     } )
+  }
 
-    await this.despesasService.getTags(this.token).subscribe(objeto => {
+
+
+ async carregarTags() {
+  
+    this.despesasService.getTags(this.token).subscribe(objeto => {
+      console.log("Carregando Tags")
       let tags: Tags[] = objeto
       let estimativasLabels: string[] = []
       let estimativasData: string[] = [];
-
+    
       tags.forEach(tag => {
         estimativasLabels.push(tag.tag)
         estimativasData.push(tag.total+'')
       })
-
+    
       this.graficoTags.labels = estimativasLabels
       this.graficoTags.data = estimativasData
-
+    
       if(tags.length!=0){
         this.exibirTags = true
-        this.exibirEstimativas = true
-        this.exibirCarregamento = false
       }else{
         this.exibirTags = false
-        this.exibirEstimativas = false
       }
-
+    
     })
-
   }
 }
+
+
 
 function formatarDataExtenso(periodo: string) {
   var data = new Date();
@@ -145,9 +159,14 @@ function formatarDataExtenso(periodo: string) {
   var mes = data.getMonth();
 
   // Resultado
-  var extenso =  meses[mes] + ' - ' + periodoAno;
+  var extenso =  meses[mes-1] + ' - ' + periodoAno;
   return extenso;
 
 }
+
+
+
+
+
 
 

@@ -45,12 +45,16 @@ export class CadastrarDespesaComponent implements OnInit {
 
   cadastrarDespesa() {
     let body
+    let parcelaCompra
+    if(this.cadastroForm.value.inputParcela==""){
+      parcelaCompra = 1
+    }
     if(this.cadastroForm.value.inputIdGrupo != "0"){
       body = {
         nomeDespesa: this.cadastroForm.value.inputNomeDespesa,
         proprietarioDespesa: 2,
-        valor: this.cadastroForm.value.inputValor,
-        parcela: this.cadastroForm.value.inputParcela,
+        valor: this.cadastroForm.value.inputValor, 
+        parcela: parcelaCompra,
         data: this.cadastroForm.value.inputData,
         idGrupo: this.cadastroForm.value.inputIdGrupo,
         tag: this.cadastroForm.value.inputCategoria
@@ -60,7 +64,7 @@ export class CadastrarDespesaComponent implements OnInit {
         nomeDespesa: this.cadastroForm.value.inputNomeDespesa,
         proprietarioDespesa: 2,
         valor: this.cadastroForm.value.inputValor,
-        parcela: this.cadastroForm.value.inputParcela,
+        parcela: parcelaCompra,
         data: this.cadastroForm.value.inputData
       }
     } 
