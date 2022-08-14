@@ -3,16 +3,21 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "npm start",
+    "start": "node server.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build:prod": "ng build --prod",
-    "heroku-postbuild": "npm run build:prod"
+    "heroku-postbuild": "ng build --prod",
+    "preinstall": "npm install -g http-server",
+    "postinstall": "ng build && mv dist/* ."
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/build-angular": "~0.1102.8",
+    "@angular/cli": "~11.2.8",
+    "@angular/compiler-cli": "~11.2.9",
     "@angular/animations": "~11.2.9",
     "@angular/common": "~11.2.9",
     "@angular/compiler": "~11.2.9",
