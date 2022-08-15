@@ -46,8 +46,10 @@ export class CadastrarDespesaComponent implements OnInit {
   cadastrarDespesa() {
     let body
     let parcelaCompra
-    if(this.cadastroForm.value.inputParcela==""){
+    if(this.cadastroForm.value.inputParcela== ""){
       parcelaCompra = 1
+    }else{
+      parcelaCompra = this.cadastroForm.value.inputParcela;
     }
     if(this.cadastroForm.value.inputIdGrupo != "0"){
       body = {
